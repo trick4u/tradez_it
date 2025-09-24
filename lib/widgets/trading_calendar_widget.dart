@@ -15,13 +15,11 @@ class TradingCalendarWidget extends StatefulWidget {
 class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
   @override
   Widget build(BuildContext context) {
-    final mainApiClient = Get.find<MainApiClient>();
-    final controller = Get.put(
-      CalendarController(
-        mainApiClient: mainApiClient,
-        accountId: "c64deeec-d85d-4a02-88d3-1530956fccaf",
-      ),
-    );
+   final CalendarController controller = Get.put(
+    CalendarController(
+      mainApiClient: Get.find<MainApiClient>(),
+    ),
+  );
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(16),

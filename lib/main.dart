@@ -21,7 +21,7 @@ class DailyPnLChart extends StatelessWidget {
     for (var data in dailyPnL) {
       cumulativePnL += data['pnl'];
       cumulativeData.add({
-        'date': data['date'], 
+        'date': data['date'],
         'cumulativePnL': cumulativePnL,
         'positiveValue': cumulativePnL >= 0 ? cumulativePnL : 0,
         'negativeValue': cumulativePnL < 0 ? cumulativePnL : 0,
@@ -50,7 +50,10 @@ class DailyPnLChart extends StatelessWidget {
                 ),
                 primaryYAxis: NumericAxis(
                   labelStyle: TextStyle(color: Colors.white),
-                  majorGridLines: MajorGridLines(width: 0.5, color: Colors.grey[700]),
+                  majorGridLines: MajorGridLines(
+                    width: 0.5,
+                    color: Colors.grey[700],
+                  ),
                   minimum: -2000,
                   maximum: 7000,
                   interval: 1000,
@@ -102,9 +105,9 @@ class DailyPnLChart extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             SizedBox(height: 20),
-            
+
             // Second Chart - Daily P&L Bar Chart (Like the screenshot)
             Container(
               height: 400,
@@ -130,11 +133,7 @@ class DailyPnLChart extends StatelessWidget {
                         size: 18,
                       ),
                       Spacer(),
-                      Icon(
-                        Icons.chevron_right,
-                        color: Colors.white,
-                        size: 20,
-                      ),
+                      Icon(Icons.chevron_right, color: Colors.white, size: 20),
                     ],
                   ),
                   SizedBox(height: 16),
@@ -143,7 +142,10 @@ class DailyPnLChart extends StatelessWidget {
                       plotAreaBorderWidth: 0,
                       backgroundColor: Color(0xFF2C3E50),
                       primaryXAxis: DateTimeAxis(
-                        labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
                         majorGridLines: MajorGridLines(width: 0),
                         axisLine: AxisLine(width: 0),
                         dateFormat: DateFormat('dd/MM'),
@@ -151,7 +153,10 @@ class DailyPnLChart extends StatelessWidget {
                         interval: 1,
                       ),
                       primaryYAxis: NumericAxis(
-                        labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
                         majorGridLines: MajorGridLines(width: 0),
                         axisLine: AxisLine(width: 0),
                         numberFormat: NumberFormat.currency(symbol: '₹'),
@@ -167,14 +172,17 @@ class DailyPnLChart extends StatelessWidget {
                       series: <CartesianSeries>[
                         ColumnSeries<Map<String, dynamic>, DateTime>(
                           dataSource: dailyPnL,
-                          xValueMapper: (data, _) => DateTime.parse(data['date']),
+                          xValueMapper: (data, _) =>
+                              DateTime.parse(data['date']),
                           yValueMapper: (data, _) => data['pnl'],
-                          pointColorMapper: (data, _) => data['pnl'] >= 0 
-                            ? Color(0xFF2ECC71) 
-                            : Color(0xFFE74C3C),
+                          pointColorMapper: (data, _) => data['pnl'] >= 0
+                              ? Color(0xFF2ECC71)
+                              : Color(0xFFE74C3C),
                           width: 0.6,
                           spacing: 0.1,
-                          dataLabelSettings: DataLabelSettings(isVisible: false),
+                          dataLabelSettings: DataLabelSettings(
+                            isVisible: false,
+                          ),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ],
@@ -191,41 +199,44 @@ class DailyPnLChart extends StatelessWidget {
 }
 
 void main() {
-    final mainApiClient = MainApiClient(
+  final mainApiClient = MainApiClient(
     baseUrl: "https://dev.tradezeit.cirqllabs.com",
     bearerToken:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU5MTI0MTYxLCJpYXQiOjE3NTg1MTkzNjEsImp0aSI6ImFkZTBiYTA3YWZhMjQ4YTc4YWM0OGFkYjM3ODVhNTc5IiwidXNlcl9pZCI6IjQ4ODgwMDIzLWZlMWYtNGEyNS05MmM4LTQzNTE4YWQxMDgxMSJ9.VDiLsbrNSfsgpDqValZMGSGhn59F2gfW3gMdC1qU8uk",
+    accountId: "c64deeec-d85d-4a02-88d3-1530956fccaf",
   );
 
   // Register MainApiClient with GetX for dependency injection
   Get.put(mainApiClient);
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: MainScreen(),
-    // home: DailyPnLChart(
-    //   dailyPnL: [
-    //     {"date": "2024-09-02", "pnl": 1200.0, "trades": 2},
-    //     {"date": "2024-09-03", "pnl": 800.0, "trades": 1},
-    //     {"date": "2024-09-04", "pnl": -450.0, "trades": 3},
-    //     {"date": "2024-09-05", "pnl": 600.0, "trades": 2},
-    //     {"date": "2024-09-06", "pnl": -1800.0, "trades": 4},
-    //     {"date": "2024-09-09", "pnl": -900.0, "trades": 2},
-    //     {"date": "2024-09-10", "pnl": 1500.0, "trades": 3},
-    //     {"date": "2024-09-11", "pnl": -300.0, "trades": 1},
-    //     {"date": "2024-09-12", "pnl": 750.0, "trades": 2},
-    //     {"date": "2024-09-13", "pnl": -2200.0, "trades": 5},
-    //     {"date": "2024-09-16", "pnl": 400.0, "trades": 1},
-    //     {"date": "2024-09-17", "pnl": -650.0, "trades": 2},
-    //     {"date": "2024-09-18", "pnl": 950.0, "trades": 3},
-    //     {"date": "2024-09-19", "pnl": -1100.0, "trades": 3},
-    //     {"date": "2024-09-20", "pnl": 1800.0, "trades": 4},
-    //     {"date": "2024-09-23", "pnl": -500.0, "trades": 2},
-    //     {"date": "2024-09-24", "pnl": 1200.0, "trades": 3},
-    //     {"date": "2024-09-25", "pnl": -800.0, "trades": 2},
-    //     {"date": "2024-09-26", "pnl": 350.0, "trades": 1},
-    //     {"date": "2024-09-27", "pnl": -400.0, "trades": 2},
-    //     {"date": "2024-09-30", "pnl": 2200.0, "trades": 5},
-    //   ],
-    // ),
-  ));
+  runApp(
+    GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MainScreen(),
+      // home: DailyPnLChart(
+      //   dailyPnL: [
+      //     {"date": "2024-09-02", "pnl": 1200.0, "trades": 2},
+      //     {"date": "2024-09-03", "pnl": 800.0, "trades": 1},
+      //     {"date": "2024-09-04", "pnl": -450.0, "trades": 3},
+      //     {"date": "2024-09-05", "pnl": 600.0, "trades": 2},
+      //     {"date": "2024-09-06", "pnl": -1800.0, "trades": 4},
+      //     {"date": "2024-09-09", "pnl": -900.0, "trades": 2},
+      //     {"date": "2024-09-10", "pnl": 1500.0, "trades": 3},
+      //     {"date": "2024-09-11", "pnl": -300.0, "trades": 1},
+      //     {"date": "2024-09-12", "pnl": 750.0, "trades": 2},
+      //     {"date": "2024-09-13", "pnl": -2200.0, "trades": 5},
+      //     {"date": "2024-09-16", "pnl": 400.0, "trades": 1},
+      //     {"date": "2024-09-17", "pnl": -650.0, "trades": 2},
+      //     {"date": "2024-09-18", "pnl": 950.0, "trades": 3},
+      //     {"date": "2024-09-19", "pnl": -1100.0, "trades": 3},
+      //     {"date": "2024-09-20", "pnl": 1800.0, "trades": 4},
+      //     {"date": "2024-09-23", "pnl": -500.0, "trades": 2},
+      //     {"date": "2024-09-24", "pnl": 1200.0, "trades": 3},
+      //     {"date": "2024-09-25", "pnl": -800.0, "trades": 2},
+      //     {"date": "2024-09-26", "pnl": 350.0, "trades": 1},
+      //     {"date": "2024-09-27", "pnl": -400.0, "trades": 2},
+      //     {"date": "2024-09-30", "pnl": 2200.0, "trades": 5},
+      //   ],
+      // ),
+    ),
+  );
 }

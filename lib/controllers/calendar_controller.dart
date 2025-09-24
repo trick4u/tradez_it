@@ -5,10 +5,9 @@ import '../data/models/trade_data_model.dart';
 import '../main_api_client.dart';
 
 class CalendarController extends GetxController {
-  final MainApiClient mainApiClient;
-  final String accountId;
+ final MainApiClient mainApiClient;
 
-  CalendarController({required this.mainApiClient, required this.accountId});
+  CalendarController({required this.mainApiClient});
 
   var currentMonth = DateTime.now().obs;
   var trades = <String, TradeData>{}.obs;
@@ -54,7 +53,7 @@ class CalendarController extends GetxController {
     );
     try {
       final data = await mainApiClient.calendarApiClient.fetchCalendarData(
-        accountId: accountId,
+        accountId: mainApiClient.accountId,
         startDate: "${firstDay.toIso8601String().substring(0, 10)}",
         endDate: "${lastDay.toIso8601String().substring(0, 10)}",
       );
@@ -90,7 +89,7 @@ class CalendarController extends GetxController {
     try {
       final metricData = await mainApiClient.calendarApiClient
           .fetchDashBoardMetrics(
-            accountId: accountId,
+            accountId: mainApiClient.accountId,
             startDate: "2021-02-01",
             endDate: "2024-12-31",
           );
