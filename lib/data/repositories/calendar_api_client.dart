@@ -41,7 +41,9 @@ class CalendarApiClient {
           throw Exception(body['message'] ?? 'Unknown error occurred');
         }
       } else {
-        throw Exception('Failed to fetch calendar data: ${response.statusCode}');
+        throw Exception(
+          'Failed to fetch calendar data: ${response.statusCode}',
+        );
       }
     } catch (e) {
       throw Exception('Error fetching calendar data: $e');
@@ -77,7 +79,9 @@ class CalendarApiClient {
           throw Exception(body['message'] ?? 'Unknown error occurred');
         }
       } else {
-        throw Exception('Failed to fetch dashboard metrics: ${response.statusCode}');
+        throw Exception(
+          'Failed to fetch dashboard metrics: ${response.statusCode}',
+        );
       }
     } catch (e) {
       throw Exception('Error fetching dashboard metrics: $e');
@@ -86,6 +90,5 @@ class CalendarApiClient {
     }
   }
 
-
-
+  
 }

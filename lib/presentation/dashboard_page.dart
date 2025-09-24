@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/dashBoard_widget.dart';
+import '../widgets/trading_calendar_widget.dart';
 
 class DashboardPage extends StatelessWidget {
   @override
@@ -18,13 +19,16 @@ class DashboardPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          DashboardWidget(),
-          Center(
-            child: Text('Dashboard Page', style: TextStyle(fontSize: 24)),
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            DashboardWidget(),
+            TradingCalendarWidget(),
+            Center(
+              child: Text('Dashboard Page', style: TextStyle(fontSize: 24)),
+            ),
+          ],
+        ),
       ),
     );
   }

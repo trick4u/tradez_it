@@ -20,8 +20,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
       mainApiClient: Get.find<MainApiClient>(),
     ),
   );
-    return Scaffold(
-      body: Container(
+    return Container(
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(color: Color(0xFF1E2329)),
         child: Column(
@@ -41,8 +40,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
             }),
           ],
         ),
-      ),
-    );
+      );
   }
 
   Widget buildHeader(CalendarController controller) {

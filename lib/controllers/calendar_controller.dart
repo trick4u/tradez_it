@@ -5,7 +5,7 @@ import '../data/models/trade_data_model.dart';
 import '../main_api_client.dart';
 
 class CalendarController extends GetxController {
- final MainApiClient mainApiClient;
+  final MainApiClient mainApiClient;
 
   CalendarController({required this.mainApiClient});
 
@@ -19,7 +19,7 @@ class CalendarController extends GetxController {
   @override
   void onInit() {
     fetchMonthData();
-    fetchDashBoarddata();
+    fetchDashBoardData();
     super.onInit();
   }
 
@@ -74,7 +74,7 @@ class CalendarController extends GetxController {
     }
   }
 
-  Future<void> fetchDashBoarddata() async {
+  Future<void> fetchDashBoardData() async {
     isDashBoardDataLoading.value = true;
     final firstDay = DateTime(
       currentMonth.value.year,
@@ -90,12 +90,10 @@ class CalendarController extends GetxController {
       final metricData = await mainApiClient.calendarApiClient
           .fetchDashBoardMetrics(
             accountId: mainApiClient.accountId,
-            startDate: "2021-02-01",
-            endDate: "2024-12-31",
+            startDate: "${firstDay.toIso8601String().substring(0, 10)}",
+            endDate: "${lastDay.toIso8601String().substring(0, 10)}",
           );
-      //      startDate: "${firstDay.toIso8601String().substring(0, 10)}",
-      // endDate: "${lastDay.toIso8601String().substring(0, 10)}",
-
+    
       // Print net_pnl and other fields to verify data
       print('Net PNL: ${metricData.data?.netPnl ?? 'null'}');
       print('Profit Factor: ${metricData.data?.profitFactor ?? 'null'}');
