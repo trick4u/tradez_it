@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:tradez_it/presentation/main_screen.dart';
 import 'package:tradez_it/widgets/trading_calendar_widget.dart';
 
 import 'main_api_client.dart';
@@ -200,7 +201,7 @@ void main() {
   Get.put(mainApiClient);
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: DashboardWidget(),
+    home: MainScreen(),
     // home: DailyPnLChart(
     //   dailyPnL: [
     //     {"date": "2024-09-02", "pnl": 1200.0, "trades": 2},

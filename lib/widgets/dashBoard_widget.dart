@@ -15,8 +15,8 @@ class DashboardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+    return Container(
+        
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
         color: Colors.black87,
         child: Obx(() {
@@ -229,8 +229,7 @@ class DashboardWidget extends StatelessWidget {
             ],
           );
         }),
-      ),
-    );
+      );
   }
 
   Widget _infoCard({

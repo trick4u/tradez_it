@@ -16,7 +16,7 @@ class CalendarController extends GetxController {
 
   var isLoading = false.obs;
   var isDashBoardDataLoading = false.obs;
-   var overallMetrics = Rxn<Data>();
+  var overallMetrics = Rxn<Data>();
   @override
   void onInit() {
     fetchMonthData();
@@ -88,11 +88,14 @@ class CalendarController extends GetxController {
       0,
     );
     try {
-      final metricData = await mainApiClient.calendarApiClient.fetchDashBoardMetrics(
-        accountId: accountId,
-        startDate: "2021-02-01",
-        endDate: "2024-12-31",
-      );
+      final metricData = await mainApiClient.calendarApiClient
+          .fetchDashBoardMetrics(
+            accountId: accountId,
+            startDate: "2021-02-01",
+            endDate: "2024-12-31",
+          );
+      //      startDate: "${firstDay.toIso8601String().substring(0, 10)}",
+      // endDate: "${lastDay.toIso8601String().substring(0, 10)}",
 
       // Print net_pnl and other fields to verify data
       print('Net PNL: ${metricData.data?.netPnl ?? 'null'}');
@@ -108,11 +111,13 @@ class CalendarController extends GetxController {
       if (metricData.data != null && metricData.data!.dailyPnl != null) {
         for (final dailyPnl in metricData.data!.dailyPnl!) {
           if (dailyPnl.date != null) {
-            dashBoardMetrics[dailyPnl.date!.toIso8601String().substring(0, 10)] =
-                DashBoardMetricModel(
-                  status: 'success',
-                  data: Data(dailyPnl: [dailyPnl]),
-                );
+            dashBoardMetrics[dailyPnl.date!.toIso8601String().substring(
+              0,
+              10,
+            )] = DashBoardMetricModel(
+              status: 'success',
+              data: Data(dailyPnl: [dailyPnl]),
+            );
           }
         }
       }
