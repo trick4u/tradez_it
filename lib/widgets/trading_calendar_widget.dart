@@ -15,32 +15,29 @@ class TradingCalendarWidget extends StatefulWidget {
 class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
   @override
   Widget build(BuildContext context) {
-   final CalendarController controller = Get.put(
-    CalendarController(
-      mainApiClient: Get.find<MainApiClient>(),
-    ),
-  );
+    final CalendarController controller = Get.put(
+      CalendarController(mainApiClient: Get.find<MainApiClient>()),
+    );
     return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: const BoxDecoration(color: Color(0xFF1E2329)),
-        child: Column(
-          children: [
-            // Header with month and navigation buttons wrapped in Obx for reactiveness
-            Obx(() => buildHeader(controller)),
+      padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(color: Color(0xFF1E2329)),
+      child: Column(
+        children: [
+          // Header with month and navigation buttons wrapped in Obx for reactiveness
+          Obx(() => buildHeader(controller)),
 
-            // Weekday headers don't depend on state so no Obx needed
-            buildWeekdayHeaders(),
+          // Weekday headers don't depend on state so no Obx needed
+          buildWeekdayHeaders(),
 
-            
-            Obx(() {
-              if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return buildCalendarGrid(controller);
-            }),
-          ],
-        ),
-      );
+          Obx(() {
+            if (controller.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return buildCalendarGrid(controller);
+          }),
+        ],
+      ),
+    );
   }
 
   Widget buildHeader(CalendarController controller) {

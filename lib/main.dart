@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tradez_it/presentation/main_screen.dart';
-import 'package:tradez_it/widgets/area_line_chart.dart';
 import 'package:tradez_it/widgets/trading_calendar_widget.dart';
 
 import 'main_api_client.dart';
@@ -23,7 +22,7 @@ void main() {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DailyPnLChart(),
+      home: MainScreen(),
       // home: DailyPnLChart(
       //   dailyPnL: [
       //     {"date": "2024-09-02", "pnl": 1200.0, "trades": 2},

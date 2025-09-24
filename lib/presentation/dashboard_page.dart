@@ -24,9 +24,7 @@ class DashboardPage extends StatelessWidget {
           children: [
             DashboardWidget(),
             TradingCalendarWidget(),
-            Center(
-              child: Text('Dashboard Page', style: TextStyle(fontSize: 24)),
-            ),
+           
           ],
         ),
       ),

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../controllers/navigation_sontroller.dart';
 import 'dashboard_page.dart';
-import 'home_page.dart';
+import 'trade_page.dart';
 import 'notifications_page.dart';
 import 'profile_page.dart';
 import 'settings_page.dart';
@@ -13,7 +13,7 @@ class MainScreen extends StatelessWidget {
 
   final List<Widget> pages = [
     DashboardPage(),
-    HomePage(),
+    TradePage(),
     ProfilePage(),
     SettingsPage(),
     NotificationsPage(),
@@ -35,15 +35,15 @@ class MainScreen extends StatelessWidget {
               icon: Icon(Icons.dashboard),
               label: 'Dashboard',
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trades'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Import Trades'),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
-              label: 'Settings',
+              label: 'Reports',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
-              label: 'Notifications',
+              label: 'Profile',
             ),
           ],
         ),
