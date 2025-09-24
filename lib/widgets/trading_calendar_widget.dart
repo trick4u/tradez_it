@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/calendar_controller.dart';
+import '../controllers/dashboard_controller.dart';
 
 import '../data/models/trade_data_model.dart';
 import '../main_api_client.dart';
@@ -15,8 +15,8 @@ class TradingCalendarWidget extends StatefulWidget {
 class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
   @override
   Widget build(BuildContext context) {
-    final CalendarController controller = Get.put(
-      CalendarController(mainApiClient: Get.find<MainApiClient>()),
+    final DashBoardController controller = Get.put(
+      DashBoardController(mainApiClient: Get.find<MainApiClient>()),
     );
     return Container(
       padding: const EdgeInsets.all(16),
@@ -40,7 +40,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
     );
   }
 
-  Widget buildHeader(CalendarController controller) {
+  Widget buildHeader(DashBoardController controller) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
@@ -96,7 +96,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
     );
   }
 
-  Widget buildCalendarGrid(CalendarController controller) {
+  Widget buildCalendarGrid(DashBoardController controller) {
     final currentMonth = controller.currentMonth.value;
     final trades = controller.trades;
 

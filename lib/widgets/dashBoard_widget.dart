@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:math' as math;
 
-import '../controllers/calendar_controller.dart';
+
+import '../controllers/dashboard_controller.dart';
 import '../main_api_client.dart';
 
 class DashboardWidget extends StatelessWidget {
-  final CalendarController controller = Get.put(
-    CalendarController(mainApiClient: Get.find<MainApiClient>()),
+  final DashBoardController controller = Get.put(
+    DashBoardController(mainApiClient: Get.find<MainApiClient>()),
   );
 
   @override

@@ -3,15 +3,15 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../controllers/calendar_controller.dart';
+import '../controllers/dashboard_controller.dart';
 import '../main_api_client.dart';
 
 class DailyPnLChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CalendarController controller = Get.put(
-      CalendarController(mainApiClient: Get.find()),
+    final DashBoardController controller = Get.put(
+      DashBoardController(mainApiClient: Get.find()),
     );
 
     return Obx(() {

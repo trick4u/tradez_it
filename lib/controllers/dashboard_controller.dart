@@ -6,10 +6,10 @@ import 'package:tradez_it/data/models/dashboard_metric_model.dart';
 import '../data/models/trade_data_model.dart';
 import '../main_api_client.dart';
 
-class CalendarController extends GetxController {
+class DashBoardController extends GetxController {
   final MainApiClient mainApiClient;
 
-  CalendarController({required this.mainApiClient});
+  DashBoardController({required this.mainApiClient});
 
   var currentMonth = DateTime.now().obs;
   var startDate = Rxn<DateTime>();
