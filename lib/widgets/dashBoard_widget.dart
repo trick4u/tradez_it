@@ -7,10 +7,7 @@ import '../controllers/dashboard_controller.dart';
 import '../main_api_client.dart';
 
 class DashboardWidget extends StatelessWidget {
-  final DashBoardController controller = Get.put(
-    DashBoardController(mainApiClient: Get.find<MainApiClient>()),
-  );
-
+  final DashBoardController controller = Get.find<DashBoardController>();
   @override
   Widget build(BuildContext context) {
     return Container(

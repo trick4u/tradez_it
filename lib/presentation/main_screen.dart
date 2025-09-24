@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controllers/calendar_controller.dart';
 import '../controllers/dashboard_controller.dart';
 import '../controllers/import_trade_controller.dart';
 import '../controllers/navigation_sontroller.dart';
@@ -20,6 +21,10 @@ class MainScreen extends StatelessWidget {
 
   // Initialize other controllers
   final DashBoardController dashBoardController = Get.put(DashBoardController(
+      mainApiClient: Get.find<MainApiClient>()
+  ), permanent: true);
+
+  final CalendarController calendarController = Get.put(CalendarController(
       mainApiClient: Get.find<MainApiClient>()
   ), permanent: true);
   final TradeController tradeController = Get.put(TradeController(), permanent: true);

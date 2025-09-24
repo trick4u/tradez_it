@@ -1,9 +1,5 @@
-// ignore_for_file: unnecessary_string_interpolations
-
 import 'package:get/get.dart';
 import 'package:tradez_it/data/models/dashboard_metric_model.dart';
-
-import '../data/models/trade_data_model.dart';
 import '../main_api_client.dart';
 
 class DashBoardController extends GetxController {
@@ -11,47 +7,21 @@ class DashBoardController extends GetxController {
 
   DashBoardController({required this.mainApiClient});
 
-  var currentMonth = DateTime.now().obs;
   var startDate = Rxn<DateTime>();
   var endDate = Rxn<DateTime>();
-  var trades = <String, TradeData>{}.obs;
   var dashBoardMetrics = <String, DashBoardMetricModel>{}.obs;
-  var isLoading = false.obs;
   var isDashBoardDataLoading = false.obs;
   var overallMetrics = Rxn<Data>();
 
   @override
   void onInit() {
-    print("=== CalendarController onInit ===");
-    fetchMonthData();
+    print("=== DashBoardController onInit ===");
     fetchDashBoardData();
     super.onInit();
   }
 
-  void previousMonth() {
-    currentMonth.value = DateTime(
-      currentMonth.value.year,
-      currentMonth.value.month - 1,
-    );
-    startDate.value = null;
-    endDate.value = null;
-    fetchMonthData();
-    fetchDashBoardData();
-  }
-
-  void nextMonth() {
-    currentMonth.value = DateTime(
-      currentMonth.value.year,
-      currentMonth.value.month + 1,
-    );
-    startDate.value = null;
-    endDate.value = null;
-    fetchMonthData();
-    fetchDashBoardData();
-  }
-
   void updateDateRange(DateTime start, DateTime end) {
-    print("=== updateDateRange called ===");
+    print("=== DashBoardController updateDateRange called ===");
     print("Start date: $start");
     print("End date: $end");
     
@@ -62,64 +32,18 @@ class DashBoardController extends GetxController {
     print("endDate.value after setting: ${endDate.value}");
 
     fetchDashBoardData();
-    fetchMonthData();
   }
 
-  // Helper method to convert DateTime to ISO string date format
   String _dateToString(DateTime date) {
     return date.toIso8601String().substring(0, 10);
-  }
-
-  Future<void> fetchMonthData() async {
-    print("=== fetchMonthData called ===");
-    isLoading.value = true;
-    
-    final firstDay = startDate.value ?? 
-        DateTime(currentMonth.value.year, currentMonth.value.month, 1);
-    final lastDay = endDate.value ?? 
-        DateTime(currentMonth.value.year, currentMonth.value.month + 1, 0);
-    
-    print("fetchMonthData - firstDay: $firstDay");
-    print("fetchMonthData - lastDay: $lastDay");
-    print("fetchMonthData - startDate string: ${_dateToString(firstDay)}");
-    print("fetchMonthData - endDate string: ${_dateToString(lastDay)}");
-    
-    try {
-      final data = await mainApiClient.calendarApiClient.fetchCalendarData(
-        accountId: mainApiClient.accountId,
-        startDate: _dateToString(firstDay),
-        endDate: _dateToString(lastDay),
-      );
-      
-      print("fetchMonthData - Received data count: ${data.length}");
-      
-      trades.clear();
-      for (final item in data) {
-        final tradeData = TradeData.fromJson(item);
-        trades[tradeData.tradeDate] = tradeData;
-        print("fetchMonthData - Added trade for date: ${tradeData.tradeDate}");
-      }
-    } catch (e) {
-      print("fetchMonthData - Error: $e");
-      trades.clear();
-      Get.snackbar(
-        'Error',
-        'Failed to load calendar data: $e',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } finally {
-      isLoading.value = false;
-    }
   }
 
   Future<void> fetchDashBoardData() async {
     print("=== fetchDashBoardData called ===");
     isDashBoardDataLoading.value = true;
     
-    final firstDay = startDate.value ?? 
-        DateTime(currentMonth.value.year, currentMonth.value.month, 1);
-    final lastDay = endDate.value ?? 
-        DateTime(currentMonth.value.year, currentMonth.value.month + 1, 0);
+    final firstDay = startDate.value ?? DateTime.now();
+    final lastDay = endDate.value ?? DateTime.now();
     
     print("fetchDashBoardData - firstDay: $firstDay");
     print("fetchDashBoardData - lastDay: $lastDay");
@@ -157,11 +81,9 @@ class DashBoardController extends GetxController {
         }
       }
 
-      // Store the overall metrics
       overallMetrics.value = metricData.data;
       print("overallMetrics.value set, is null: ${overallMetrics.value == null}");
 
-      // Process daily_pnl list
       dashBoardMetrics.clear();
       if (metricData.data != null && metricData.data!.dailyPnl != null) {
         print("Processing ${metricData.data!.dailyPnl!.length} daily P&L entries");

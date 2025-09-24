@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../controllers/calendar_controller.dart';
 import '../controllers/dashboard_controller.dart';
 
 import '../data/models/trade_data_model.dart';
@@ -15,20 +16,14 @@ class TradingCalendarWidget extends StatefulWidget {
 class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
   @override
   Widget build(BuildContext context) {
-    final DashBoardController controller = Get.put(
-      DashBoardController(mainApiClient: Get.find<MainApiClient>()),
-    );
+    final CalendarController controller = Get.find<CalendarController>();
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(color: Color(0xFF1E2329)),
       child: Column(
         children: [
-          // Header with month and navigation buttons wrapped in Obx for reactiveness
           Obx(() => buildHeader(controller)),
-
-          // Weekday headers don't depend on state so no Obx needed
           buildWeekdayHeaders(),
-
           Obx(() {
             if (controller.isLoading.value) {
               return const Center(child: CircularProgressIndicator());
@@ -40,7 +35,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
     );
   }
 
-  Widget buildHeader(DashBoardController controller) {
+  Widget buildHeader(CalendarController controller) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
@@ -96,7 +91,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
     );
   }
 
-  Widget buildCalendarGrid(DashBoardController controller) {
+  Widget buildCalendarGrid(CalendarController controller) {
     final currentMonth = controller.currentMonth.value;
     final trades = controller.trades;
 
@@ -119,7 +114,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
         itemBuilder: (context, index) {
           final dayOffset = index - startingWeekday;
           if (dayOffset < 0 || dayOffset >= daysInMonth) {
-            return Container(); // empty days outside current month
+            return Container();
           }
           final day = dayOffset + 1;
           final dateKey = _formatDateKey(
@@ -138,8 +133,8 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
 
     if (tradeData != null) {
       backgroundColor = tradeData.dailyPnl >= 0
-          ? const Color(0xFF0ECB81) // Green for profit
-          : const Color(0xFFF6465D); // Red for loss
+          ? const Color(0xFF0ECB81)
+          : const Color(0xFFF6465D);
     }
 
     return Container(
@@ -149,7 +144,6 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
       ),
       child: Stack(
         children: [
-          // Main content
           Padding(
             padding: const EdgeInsets.all(6),
             child: Column(
@@ -185,7 +179,6 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
               ],
             ),
           ),
-          // Notes icon
           if (tradeData?.hasDailyNote == true)
             Positioned(
               top: 4,
