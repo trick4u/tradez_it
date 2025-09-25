@@ -6,29 +6,22 @@ import '../controllers/dashboard_controller.dart';
 import '../data/models/trade_data_model.dart';
 import '../main_api_client.dart';
 
-class TradingCalendarWidget extends StatefulWidget {
+class TradingCalendarWidget extends StatelessWidget {
   const TradingCalendarWidget({super.key});
 
-  @override
-  State<TradingCalendarWidget> createState() => _TradingCalendarWidgetState();
-}
-
-class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
   @override
   Widget build(BuildContext context) {
     final CalendarController controller = Get.find<CalendarController>();
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(color: Color(0xFF1E2329)),
+      color: Color.fromARGB(255, 17, 7, 62),
       child: Column(
         children: [
           Obx(() => buildHeader(controller)),
           buildWeekdayHeaders(),
           Obx(() {
-            if (controller.isLoading.value) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            return buildCalendarGrid(controller);
+            
+           return buildCalendarGrid(controller);
           }),
         ],
       ),
@@ -101,28 +94,28 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
 
     return Container(
       padding: const EdgeInsets.all(8),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 7,
-          childAspectRatio: 0.8,
-          crossAxisSpacing: 4,
-          mainAxisSpacing: 4,
-        ),
-        itemCount: 42, // 6 weeks * 7 days
-        itemBuilder: (context, index) {
+      child: Wrap(
+        spacing: 4,
+        runSpacing: 4,
+        children: List.generate(42, (index) {
           final dayOffset = index - startingWeekday;
           if (dayOffset < 0 || dayOffset >= daysInMonth) {
-            return Container();
+            return SizedBox(
+              width: (MediaQuery.of(Get.context!).size.width - 48) / 7 - 4,
+              height: ((MediaQuery.of(Get.context!).size.width - 48) / 7 - 4) / 0.8,
+            );
           }
           final day = dayOffset + 1;
           final dateKey = _formatDateKey(
             DateTime(currentMonth.year, currentMonth.month, day),
           );
           final TradeData? tradeData = controller.trades[dateKey];
-          return buildDayTile(day, tradeData);
-        },
+          return SizedBox(
+            width: (MediaQuery.of(Get.context!).size.width - 48) / 7 - 4,
+            height: ((MediaQuery.of(Get.context!).size.width - 48) / 7 - 4) / 0.8,
+            child: buildDayTile(day, tradeData),
+          );
+        }),
       ),
     );
   }

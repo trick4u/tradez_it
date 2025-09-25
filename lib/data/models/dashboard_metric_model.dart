@@ -63,8 +63,8 @@ class Data {
       grossLoss: (json['gross_loss'] as num?)?.toDouble(),
       avgWinPerTrade: (json['avg_win_per_trade'] as num?)?.toDouble(),
       avgLossPerTrade: (json['avg_loss_per_trade'] as num?)?.toDouble(),
-     dailyPnl: (json['dailyPnl'] is List)
-    ? (json['dailyPnl'] as List).map((item) => DailyPnl.fromJson(item)).toList()
+     dailyPnl: (json['daily_pnl'] is List)
+    ? (json['daily_pnl'] as List).map((item) => DailyPnl.fromJson(item)).toList()
     : [],
     );
   }

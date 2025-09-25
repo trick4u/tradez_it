@@ -13,7 +13,7 @@ class TradePage extends StatelessWidget {
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
         ],
       ),
-      body: Center(child: Text('Home Page', style: TextStyle(fontSize: 24))),
+      body: Center(child: Text('Trade Page', style: TextStyle(fontSize: 24))),
     );
   }
 }

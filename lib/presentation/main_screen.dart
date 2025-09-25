@@ -16,21 +16,37 @@ import 'import_trade_page.dart';
 import 'reports_page.dart';
 
 class MainScreen extends StatelessWidget {
-  final NavigationController navController = Get.put(NavigationController(), permanent: true);
-
+  final NavigationController navController = Get.put(
+    NavigationController(),
+    permanent: true,
+  );
 
   // Initialize other controllers
-  final DashBoardController dashBoardController = Get.put(DashBoardController(
-      mainApiClient: Get.find<MainApiClient>()
-  ), permanent: true);
+  final DashBoardController dashBoardController = Get.put(
+    DashBoardController(mainApiClient: Get.find<MainApiClient>()),
+    permanent: true,
+  );
 
-  final CalendarController calendarController = Get.put(CalendarController(
-      mainApiClient: Get.find<MainApiClient>()
-  ), permanent: true);
-  final TradeController tradeController = Get.put(TradeController(), permanent: true);
-  final ImportTradeController importTradeController = Get.put(ImportTradeController(), permanent: true);
-  final ReportsController reportsController = Get.put(ReportsController(), permanent: true);
-  final ProfileController profileController = Get.put(ProfileController(), permanent: true);
+  final CalendarController calendarController = Get.put(
+    CalendarController(mainApiClient: Get.find<MainApiClient>()),
+    permanent: true,
+  );
+  final TradeController tradeController = Get.put(
+    TradeController(),
+    permanent: true,
+  );
+  final ImportTradeController importTradeController = Get.put(
+    ImportTradeController(),
+    permanent: true,
+  );
+  final ReportsController reportsController = Get.put(
+    ReportsController(),
+    permanent: true,
+  );
+  final ProfileController profileController = Get.put(
+    ProfileController(),
+    permanent: true,
+  );
 
   final List<Widget> pages = [
     DashboardPage(),
@@ -44,20 +60,28 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
+       
         body: pages[navController.currentIndex.value],
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Color.fromARGB(255, 17, 7, 62),
+          type: BottomNavigationBarType
+              .fixed, // important for color to show properly
+       
           currentIndex: navController.currentIndex.value,
           onTap: navController.changePage,
           selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.grey,
           showUnselectedLabels: true,
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.dashboard),
               label: 'Dashboard',
             ),
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trades'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Import Trades'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Import Trades',
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
               label: 'Reports',

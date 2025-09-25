@@ -12,10 +12,12 @@ class DashboardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-      color: Colors.black87,
+      color: Color.fromARGB(255, 17, 7, 62),
       child: Obx(() {
-        // Use the overall metrics instead of individual daily metrics
         final metricData = controller.overallMetrics.value;
+
+        
+     
 
         final netPnl = metricData?.netPnl ?? 0.0;
         final profitFactor = metricData?.profitFactor ?? 0.0;
@@ -28,7 +30,6 @@ class DashboardWidget extends StatelessWidget {
         final avgWin = metricData?.avgWinPerTrade ?? 0.0;
         final avgLoss = metricData?.avgLossPerTrade ?? 0.0;
 
-        // Fix the calculation - avgLoss should be positive for calculation
         final double absAvgLoss = avgLoss.abs();
         final double wlDenominator = avgWin + absAvgLoss;
         final double wlRecoveryPct = wlDenominator > 0
@@ -36,28 +37,25 @@ class DashboardWidget extends StatelessWidget {
             : 0.0;
         final double wlTrade = absAvgLoss != 0 ? (avgWin / absAvgLoss) : 0.0;
 
-        // Full circle gauge for profit factor - made smaller to match Net P&L card
         Widget fullCircleGauge(double value, {double maxValue = 20.0}) {
           final double percent = (value / maxValue).clamp(0.0, 1.0);
           return SizedBox(
-            width: 40, // Reduced from 48
-            height: 40, // Reduced from 48
+            width: 40,
+            height: 40,
             child: CircularProgressIndicator(
               value: percent,
               backgroundColor: Colors.red.withOpacity(0.3),
               valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-              strokeWidth: 5, // Reduced from 6
+              strokeWidth: 5,
             ),
           );
         }
 
-        // Semi-circle gauge for win percentages - fixed alignment
         Widget semicircleGauge(double percentage, int positive, int negative) {
           return Container(
             width: 60,
-            height: 50, // Added explicit height
+            height: 50,
             child: Stack(
-              // Changed from Column to Stack for better positioning
               alignment: Alignment.center,
               children: [
                 Positioned(
@@ -66,7 +64,7 @@ class DashboardWidget extends StatelessWidget {
                     size: Size(50, 30),
                     painter: SemicirclePainter(
                       percentage: percentage / 100.0,
-                      strokeWidth: 5, // Reduced from 6
+                      strokeWidth: 5,
                     ),
                   ),
                 ),
@@ -103,7 +101,6 @@ class DashboardWidget extends StatelessWidget {
 
         return Column(
           children: [
-            // Made both cards the same height by using IntrinsicHeight
             IntrinsicHeight(
               child: Row(
                 children: [
@@ -233,6 +230,21 @@ class DashboardWidget extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => _showDateRangePicker(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 12),
+              ),
+              child: Text(
+                "Select Date Range",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
           ],
         );
       }),
@@ -255,13 +267,11 @@ class DashboardWidget extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize:
-            MainAxisSize.min, // Added to prevent unnecessary expansion
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
               Expanded(
-                // Wrapped title in Expanded to prevent overflow
                 child: Text(
                   title,
                   style: TextStyle(
@@ -291,6 +301,142 @@ class DashboardWidget extends StatelessWidget {
       ),
     );
   }
+
+  void _showDateRangePicker(BuildContext context) {
+    DateTime initialStartDate = controller.startDate.value ?? DateTime(2024, 2, 2);
+    DateTime initialEndDate = controller.endDate.value ?? DateTime(2024, 6, 20);
+
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Color.fromARGB(255, 17, 7, 62),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Start Date",
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                  Text(
+                    "End Date",
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: initialStartDate,
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime.now(),
+                        builder: (context, child) {
+                          return Theme(
+                            data: ThemeData.dark().copyWith(
+                              colorScheme: ColorScheme.dark(
+                                primary: Colors.blue,
+                                onPrimary: Colors.white,
+                                surface: Color.fromARGB(255, 17, 7, 62),
+                                onSurface: Colors.white70,
+                              ),
+                              dialogBackgroundColor: Color.fromARGB(255, 17, 7, 62),
+                            ),
+                            child: child!,
+                          );
+                        },
+                      );
+                      if (picked != null) initialStartDate = picked;
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[900],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        "${initialStartDate.day}/${initialStartDate.month}/${initialStartDate.year}",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: initialEndDate,
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime.now(),
+                        builder: (context, child) {
+                          return Theme(
+                            data: ThemeData.dark().copyWith(
+                              colorScheme: ColorScheme.dark(
+                                primary: Colors.blue,
+                                onPrimary: Colors.white,
+                                surface: Color.fromARGB(255, 17, 7, 62),
+                                onSurface: Colors.white70,
+                              ),
+                              dialogBackgroundColor: Color.fromARGB(255, 17, 7, 62),
+                            ),
+                            child: child!,
+                          );
+                        },
+                      );
+                      if (picked != null) initialEndDate = picked;
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[900],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        "${initialEndDate.day}/${initialEndDate.month}/${initialEndDate.year}",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text("Cancel", style: TextStyle(color: Colors.white70)),
+                  ),
+                  SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      controller.updateDateRange(initialStartDate, initialEndDate);
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Text("Submit", style: TextStyle(color: Colors.white)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class SemicirclePainter extends CustomPainter {
@@ -299,7 +445,7 @@ class SemicirclePainter extends CustomPainter {
 
   SemicirclePainter({
     required this.percentage,
-    this.strokeWidth = 5.0, // Reduced default from 6.0
+    this.strokeWidth = 5.0,
   });
 
   @override
@@ -307,7 +453,6 @@ class SemicirclePainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height);
     final radius = math.min(size.width / 2, size.height) - strokeWidth / 2;
 
-    // Background semicircle
     final backgroundPaint = Paint()
       ..color = Colors.red.withOpacity(0.3)
       ..style = PaintingStyle.stroke
@@ -322,7 +467,6 @@ class SemicirclePainter extends CustomPainter {
       backgroundPaint,
     );
 
-    // Progress semicircle
     final progressPaint = Paint()
       ..color = Colors.green
       ..style = PaintingStyle.stroke
